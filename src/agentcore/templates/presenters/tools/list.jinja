@@ -1,0 +1,4 @@
+{%- import 'macros.jinja' as utils %}
+{%- for tool in tools %}
+    <tool name="{{ tool.name }}">{{ tool.description }}</tool>
+{%- endfor %}

@@ -1,0 +1,7 @@
+{%- if history %}
+    {%- for action in history %}
+- {{ action.name }}({% for param, value in action.params.items() %}{{ param }}: {{ value }}{% if not loop.last %}, {% endif %}{% endfor %})
+    {%- endfor %}
+{%- else %}
+    No actions performed yet.
+{%- endif %}

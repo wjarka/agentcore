@@ -1,0 +1,9 @@
+<description>{{ tool.description }}</description>
+{%- if tool.required_parameters %}
+<required_parameters>
+    {%- for param_name, param_properties in tool.required_parameters.items() %}
+        <parameter name="{{ param_name }}">{{ param_properties.description }}</parameter>
+    {%- endfor %}
+</required_parameters>
+{%- endif %}
+<original_query>{{ query }}</original_query>

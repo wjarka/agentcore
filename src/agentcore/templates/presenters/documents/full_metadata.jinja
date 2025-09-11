@@ -1,0 +1,6 @@
+{%- import 'macros.jinja' as utils %}
+{%- for document in documents %}
+<{{ doc_tag }} {{ utils.show_field('name', document.metadata, 'name', 'Unknown') }} {{ utils.show_field('source', document.metadata, 'source', 'Unknown') }} {{ utils.show_field('path', document.metadata, 'path', 'no path') }} {{ utils.show_field('uuid', document.metadata, 'uuid', 'Unknown') }} {{ utils.show_field('description', document.metadata, 'description', 'Unknown') }} {{ utils.show_field('url', document.metadata, 'url', 'no-url', index=0) }}>
+{{ document.text }}
+</{{ doc_tag }}>
+{%- endfor %}

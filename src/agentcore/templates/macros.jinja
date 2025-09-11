@@ -1,0 +1,9 @@
+{%- macro show_field(name, obj, attr, default="Unknown", show_empty=True, index=None) -%}
+    {%- set value = obj[attr] | default(default) -%}
+    {%- if index is not none and value != default and value is sequence and value|length > index -%}
+        {%- set value = value[index] -%}
+    {%- endif -%}
+    {%- if show_empty or value != default -%}
+        {{- name }}="{{ value }}"
+    {%- endif -%}
+{%- endmacro -%}

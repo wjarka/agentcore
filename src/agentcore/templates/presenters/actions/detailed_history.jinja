@@ -1,0 +1,29 @@
+{%- for action in history %}
+    <action name="{{action.name}}">
+    {%- if action.params %}
+       <params>
+           {%- for param, value in action.params.items() %}
+           <{{param}}>{{value}}</{{param}}>
+           {%- endfor %}
+       </params>
+    {%- endif %}
+    {%- if action.description %}
+    <description>{{ action.description }}</description>
+    {%- endif %}
+    {%- set results = action.results %}
+    {%- if results %}
+        <results>
+        {{ results }}
+        </results>
+    {%- elif not action.errors %}
+        <results>
+            <result>No results for {{action.name}}.</result>
+        </results>
+    {%- endif %}
+    {%- if action.errors %}
+        <errors>
+            {{ action.errors }}
+        </errors>
+    {%- endif %}
+    </action>
+{%- endfor %}

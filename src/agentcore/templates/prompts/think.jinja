@@ -1,0 +1,17 @@
+Based on the conversation history, actions taken so far (and their results) and provided query, share your thoughts about the problem. Where appropriate, propose a plan of action or adjustments to the existing plan. Evaluate the progress made so far.
+
+<context>
+    <last_message>{{last_message}}</last_message>
+    <actions_taken>{{actions}}</actions_taken>
+</context>
+
+<output_format>
+    Output your thoughts as a JSON object with the following structure:
+{% raw %}
+{
+    "thoughts": "Your thoughts here"
+}
+{% endraw %}
+</output_format>
+
+Query: {{ query }}

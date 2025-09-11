@@ -1,0 +1,18 @@
+Generate specific parameters for the {{tool.name}} tool
+
+Respond with ONLY a JSON object matching the tool's parameter structure.
+{% raw %}
+Example for web_search: {{"query": "specific search query"}}
+Example for final_answer: {{"answer": "detailed response"}}
+{% endraw %}
+
+<context>
+<current_date>{{current_date}}</current_date>
+<tool>
+{{tool}}
+</tool>
+{%- if last_message %}<last_message>{{last_message}}</last_message>{% endif %}
+<actions_taken>
+{{actions}}
+</actions_taken>
+</context>
