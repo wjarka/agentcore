@@ -29,6 +29,4 @@ reportAny = false
 reportExplicitAny = false
 
 [dependency-groups]
-dev = [
-    "mypy>=1.17.1",
-]
+dev = []
