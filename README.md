@@ -402,6 +402,7 @@ set_dependency(LLMService, OpenAIService)
 ## Roadmap-ish
 
 - Better docs around building a custom Agent
+- More built-in strategies and more advanced agents
 - More built-in tools (web, files, data)
 - More services (and adapters for multi-provider setups)
 - CLI and examples
