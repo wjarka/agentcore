@@ -65,7 +65,6 @@ from agentcore.services import (
 from agentcore.services.embedding import DefaultEmbeddingService
 from agentcore.services.openai import OpenAIService
 from agentcore.services.text import DefaultTextService
-from agentcore.state.builtins import DefaultState
 from agentcore.state.contexts import (
     ActionContext,
     ConfigurationContext,
@@ -80,6 +79,7 @@ from agentcore.state.contexts.document import InMemoryDocumentContext
 from agentcore.state.contexts.environment import PydanticEnvironmentContext
 from agentcore.state.contexts.message import InMemoryMessageContext
 from agentcore.state.contexts.tool import InMemoryToolContext
+from agentcore.state.default import DefaultState
 from agentcore.state.protocols import State
 from agentcore.telemetry import Telemetry
 from agentcore.telemetry import entrypoint as _telemetry
