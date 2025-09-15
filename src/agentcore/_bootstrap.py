@@ -76,6 +76,8 @@ from agentcore.state.contexts import (
 from agentcore.state.contexts.action import InMemoryActionContext
 from agentcore.state.contexts.configuration import InMemoryConfigurationContext
 from agentcore.state.contexts.documents import InMemoryDocumentContext
+from agentcore.state.contexts.documents.protocols import DocumentStore
+from agentcore.state.contexts.documents.stores import InMemoryListStore
 from agentcore.state.contexts.environment import PydanticEnvironmentContext
 from agentcore.state.contexts.message import InMemoryMessageContext
 from agentcore.state.contexts.tool import InMemoryToolContext
@@ -126,6 +128,8 @@ def bootstrap(
     injector.bind(ToolContext, InMemoryToolContext)
     injector.bind(ConfigurationContext, InMemoryConfigurationContext)
     injector.bind(DocumentContext, InMemoryDocumentContext)
+    # Default DocumentStore binding (used as the default store implementation)
+    injector.bind(DocumentStore, InMemoryListStore)
     injector.bind(EnvironmentContext, PydanticEnvironmentContext)
     injector.bind(MessageContext, InMemoryMessageContext)
 

@@ -18,7 +18,6 @@ from agentcore.state.contexts import (
     MessageContext,
     ToolContext,
 )
-from agentcore.state.contexts.documents import InMemoryListStore
 from agentcore.state.contexts.documents.protocols import DocumentStore
 from agentcore.state.protocols import State
 from agentcore.telemetry.entrypoint import Telemetry
@@ -121,7 +120,7 @@ class BaseAgent(ABC, Agent):
                 docs_ctx.register_store(name, store_instance)
         # 2) Ensure action_results exists by default
         try:
-            docs_ctx.register_store("action_results", InMemoryListStore())
+            docs_ctx.register_store("action_results", injector.resolve(DocumentStore))
         except Exception:
             pass
         # 3) Seed documents
@@ -131,7 +130,7 @@ class BaseAgent(ABC, Agent):
                 try:
                     _ = docs_ctx.store(store_name)
                 except Exception:
-                    docs_ctx.register_store(store_name, InMemoryListStore())
+                    docs_ctx.register_store(store_name, injector.resolve(DocumentStore))
                 for doc in docs:
                     _ = docs_ctx.store(store_name).add(doc)
         injector.bind(Injector, injector)
