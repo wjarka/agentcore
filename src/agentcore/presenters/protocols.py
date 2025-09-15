@@ -17,10 +17,16 @@ class ToolPresenter(Protocol):
 
 class DocumentPresenter(Protocol):
     async def full_metadata(
-        self, documents: list[Document] | None = None, doc_tag: str = "document"
+        self,
+        documents: list[Document] | None = None,
+        doc_tag: str = "document",
+        store: str = "workspace",
     ) -> str: ...
     async def basic_metadata(
-        self, documents: list[Document] | None = None, doc_tag: str = "document"
+        self,
+        documents: list[Document] | None = None,
+        doc_tag: str = "document",
+        store: str = "workspace",
     ) -> str: ...
 
 
