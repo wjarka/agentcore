@@ -1,6 +1,7 @@
 __all__ = [
     "DocumentStore",
     "DocumentQuery",
+    "DocumentContext",
     "DocumentMatch",
     "InMemoryDocumentContext",
     "InMemoryListStore",
@@ -8,5 +9,5 @@ __all__ = [
 
 from .context import InMemoryDocumentContext
 from .models import DocumentMatch, DocumentQuery
-from .protocols import DocumentStore
+from .protocols import DocumentContext, DocumentStore
 from .stores import InMemoryListStore

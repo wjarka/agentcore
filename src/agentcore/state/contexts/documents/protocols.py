@@ -1,6 +1,7 @@
 from typing import Protocol
 
 from agentcore.models import Document
+from agentcore.structures.protocols import Sequence
 
 from .models import DocumentMatch, DocumentQuery
 
@@ -12,3 +13,12 @@ class DocumentStore(Protocol):
     def delete(self, id: str) -> bool: ...
     def search(self, query: DocumentQuery) -> list[DocumentMatch]: ...
 
+
+class DocumentContext(Sequence[Document], Protocol):
+    # Existing simple API (kept for compatibility in this step)
+    def add(self, document: Document) -> None: ...
+
+    # New memory-like capabilities (store management and search)
+    def register_store(self, name: str, store: DocumentStore) -> None: ...
+    def store(self, name: str) -> DocumentStore: ...
+    def search(self, query: DocumentQuery) -> list[DocumentMatch]: ...

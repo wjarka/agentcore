@@ -12,10 +12,10 @@ __all__ = [
     "DocumentMatch",
     "InMemoryDocumentContext",
 ]
+from .documents import DocumentContext
 from .protocols import (
     ActionContext,
     ConfigurationContext,
-    DocumentContext,
     EnvironmentContext,
     MessageContext,
     ToolContext,
