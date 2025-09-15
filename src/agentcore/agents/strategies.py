@@ -171,7 +171,7 @@ class DefaultExecutionStage(ExecutionStage):
             logger().exception(e)
         finally:
             for document in trace.result:
-                self._documents.add(document)
+                self._documents.store("action_results").add(document)
             self._actions.clear_current_intent()
             self._actions.clear_current_trace()
             self._actions.add_history_trace(trace)
