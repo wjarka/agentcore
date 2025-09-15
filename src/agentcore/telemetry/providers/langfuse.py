@@ -101,7 +101,7 @@ class LangfuseSpanBehavior(SpanBehavior):
         )
         with self._client.start_as_current_observation(
             as_type=kind.value, **langfuse_kwargs
-        ) as lf_span:  # pyright: ignore[reportUnknownVariableType]
+        ) as lf_span:
             match kind:
                 case SpanKind.GENERATION:
                     yield base_cls(
