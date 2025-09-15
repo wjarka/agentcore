@@ -28,6 +28,8 @@ build-backend = "uv_build"
 [tool.basedpyright]
 reportAny = false
 reportExplicitAny = false
+ignore = [".github/*"]
+
 
 [dependency-groups]
 dev = []
