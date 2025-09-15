@@ -15,6 +15,7 @@ dependencies = [
     "jinja2>=3.1.6",
     "langfuse>=3.3.3",
     "dotenv>=0.9.9",
+    "pyyaml>=6.0.2",
 ]
 
 [project.scripts]
