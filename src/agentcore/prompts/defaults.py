@@ -172,4 +172,8 @@ class DefaultDataProcessPrompt(BaseSystemPrompt):
 
     @override
     async def _prepare_vars(self) -> dict[str, str | None]:
-        return {"documents": await self._document_presenter.full_metadata()}
+        return {
+            "documents": await self._document_presenter.full_metadata(
+                store="action_results"
+            )
+        }

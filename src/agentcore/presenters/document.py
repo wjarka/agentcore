@@ -56,9 +56,7 @@ class XmlDocumentPresenter(BasePresenter, DocumentPresenter):
             raise ValueError("Provide either documents or store, not both")
         if documents is None:
             if store is None:
-                raise ValueError(
-                    "store must be provided when documents is None"
-                )
+                raise ValueError("store must be provided when documents is None")
             docs_to_render = self._documents.store(store).all()
         else:
             docs_to_render = documents
