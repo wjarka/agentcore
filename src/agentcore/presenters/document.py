@@ -26,23 +26,32 @@ class XmlDocumentPresenter(BasePresenter, DocumentPresenter):
 
     @override
     async def full_metadata(
-        self, documents: list[Document] | None = None, doc_tag: str = "document"
+        self,
+        documents: list[Document] | None = None,
+        doc_tag: str = "document",
+        store: str = "workspace",
     ) -> str:
-        return await self._list("full_metadata.jinja", documents, doc_tag)
+        return await self._list("full_metadata.jinja", documents, doc_tag, store)
 
     @override
     async def basic_metadata(
-        self, documents: list[Document] | None = None, doc_tag: str = "document"
+        self,
+        documents: list[Document] | None = None,
+        doc_tag: str = "document",
+        store: str = "workspace",
     ) -> str:
-        return await self._list("basic_metadata.jinja", documents, doc_tag)
+        return await self._list("basic_metadata.jinja", documents, doc_tag, store)
 
     async def _list(
         self,
         template_name: str,
         documents: list[Document] | None = None,
         doc_tag: str = "document",
+        store: str = "workspace",
     ):
-        docs_to_render = documents if documents else list(self._documents)
+        docs_to_render = (
+            documents if documents is not None else self._documents.store(store).all()
+        )
         result = (
             await self._render(template_name, documents=docs_to_render, doc_tag=doc_tag)
         ).strip()
