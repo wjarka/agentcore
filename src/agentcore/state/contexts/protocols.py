@@ -11,12 +11,9 @@ from typing import (
 
 from openai.types.chat import ChatCompletionMessageParam
 
-from agentcore.models import ActionIntent, ActionTrace, Document
+from agentcore.models import ActionIntent, ActionTrace
 from agentcore.structures.protocols import Mapping, Sequence
 from agentcore.toolset.protocols import Tool
-
-from .documents.models import DocumentMatch, DocumentQuery
-from .documents.protocols import DocumentStore
 
 T = TypeVar("T")
 T_co = TypeVar("T_co", covariant=True)
