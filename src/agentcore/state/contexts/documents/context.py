@@ -39,5 +39,3 @@ class InMemoryDocumentContext(SequenceMixin[Document], DocumentContext):
     @override
     def search(self, query: DocumentQuery) -> list[DocumentMatch]:
         return []
-
-

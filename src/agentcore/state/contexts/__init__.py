@@ -26,8 +26,8 @@ MemoryContext = DocumentContext
 
 # Re-export document memory types and implementation for discoverability
 from .documents import (
-    DocumentStore,
-    DocumentQuery,
     DocumentMatch,
+    DocumentQuery,
+    DocumentStore,
     InMemoryDocumentContext,
 )

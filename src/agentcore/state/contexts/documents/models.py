@@ -14,4 +14,3 @@ class DocumentQuery(BaseModel):
 class DocumentMatch(BaseModel):
     document: Document
     score: float = Field(ge=0)
-

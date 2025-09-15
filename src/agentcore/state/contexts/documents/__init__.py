@@ -5,8 +5,6 @@ __all__ = [
     "InMemoryDocumentContext",
 ]
 
-from .protocols import DocumentStore
-from .models import DocumentMatch, DocumentQuery
 from .context import InMemoryDocumentContext
-
-
+from .models import DocumentMatch, DocumentQuery
+from .protocols import DocumentStore
