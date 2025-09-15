@@ -13,6 +13,11 @@ class InMemoryListStore(DocumentStore):
         self._docs: dict[str, Document] = {}
 
     @override
+    def all(self) -> list[Document]:
+        # dict preserves insertion order in Python 3.7+
+        return list(self._docs.values())
+
+    @override
     def add(self, document: Document) -> str:
         doc_id = document.metadata.uuid or str(id(document))
         self._docs[doc_id] = document
