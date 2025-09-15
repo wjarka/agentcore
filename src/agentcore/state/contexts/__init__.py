@@ -10,6 +10,7 @@ __all__ = [
     "DocumentStore",
     "DocumentQuery",
     "DocumentMatch",
+    "InMemoryDocumentContext",
 ]
 from .protocols import (
     ActionContext,
@@ -23,6 +24,10 @@ from .protocols import (
 # Backwards/UX alias: expose MemoryContext as an alias of DocumentContext
 MemoryContext = DocumentContext
 
-# Re-export document memory types for discoverability
-from .documents.models import DocumentMatch, DocumentQuery
-from .documents.protocols import DocumentStore
+# Re-export document memory types and implementation for discoverability
+from .documents import (
+    DocumentStore,
+    DocumentQuery,
+    DocumentMatch,
+    InMemoryDocumentContext,
+)
