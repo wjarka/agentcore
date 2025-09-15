@@ -1,0 +1,13 @@
+from typing import Protocol
+
+from agentcore.models import Document
+
+from .models import DocumentMatch, DocumentQuery
+
+
+class DocumentStore(Protocol):
+    def add(self, document: Document) -> str: ...
+    def get(self, id: str) -> Document | None: ...
+    def delete(self, id: str) -> bool: ...
+    def search(self, query: DocumentQuery) -> list[DocumentMatch]: ...
+
