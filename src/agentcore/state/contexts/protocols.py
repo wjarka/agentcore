@@ -11,7 +11,7 @@ from typing import (
 
 from openai.types.chat import ChatCompletionMessageParam
 
-from agentcore.models import ActionIntent, ActionTrace, Document
+from agentcore.models import ActionIntent, ActionTrace
 from agentcore.structures.protocols import Mapping, Sequence
 from agentcore.toolset.protocols import Tool
 
@@ -45,10 +45,6 @@ class ActionContext(Protocol):
 
 class MessageContext(Sequence[ChatCompletionMessageParam], Protocol):
     def add(self, message: ChatCompletionMessageParam) -> None: ...
-
-
-class DocumentContext(Sequence[Document], Protocol):
-    def add(self, document: Document) -> None: ...
 
 
 class ToolContext(Mapping[str, Tool], Protocol): ...
