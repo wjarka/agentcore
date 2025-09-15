@@ -96,7 +96,7 @@ class BaseAgent(ABC, Agent):
         injector: Injector,
         messages: list[ChatCompletionMessageParam],
         tools: list[Tool],
-        documents: dict[str, list[Document]] | list[Document] | None,
+        documents: dict[str, list[Document]] | None,
         stores: dict[str, DocumentStore | Callable[[], DocumentStore]] | None,
         max_steps: int,
     ) -> None:
@@ -126,26 +126,14 @@ class BaseAgent(ABC, Agent):
             pass
         # 3) Seed documents
         if documents:
-            if isinstance(documents, list):
-                logger().warning(
-                    "BaseAgent.create: list[Document] is deprecated; seeding to 'workspace' store"
-                )
-                # create if missing
+            for store_name, docs in documents.items():
+                # Create missing stores with default impl
                 try:
-                    docs_ctx.register_store("workspace", InMemoryListStore())
+                    _ = docs_ctx.store(store_name)
                 except Exception:
-                    pass
-                for doc in documents:
-                    _ = docs_ctx.store("workspace").add(doc)
-            else:
-                for store_name, docs in documents.items():
-                    # Create missing stores with default impl
-                    try:
-                        _ = docs_ctx.store(store_name)
-                    except Exception:
-                        docs_ctx.register_store(store_name, InMemoryListStore())
-                    for doc in docs:
-                        _ = docs_ctx.store(store_name).add(doc)
+                    docs_ctx.register_store(store_name, InMemoryListStore())
+                for doc in docs:
+                    _ = docs_ctx.store(store_name).add(doc)
         injector.bind(Injector, injector)
         injector.bind_singleton(AsyncCaller)
 
@@ -156,7 +144,7 @@ class BaseAgent(ABC, Agent):
         cls,
         messages: list[ChatCompletionMessageParam],
         tools: list[Tool] | None = None,
-        documents: dict[str, list[Document]] | list[Document] | None = None,
+        documents: dict[str, list[Document]] | None = None,
         stores: dict[str, DocumentStore | Callable[[], DocumentStore]] | None = None,
         max_steps: int = 10,
         overrides: dict[type, type | object] | None = None,
