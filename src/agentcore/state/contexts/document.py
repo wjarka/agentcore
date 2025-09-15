@@ -1,30 +1,7 @@
-from __future__ import annotations
+"""Shim module for backward compatibility.
 
-from collections.abc import Sequence
-from typing import override
+InMemoryDocumentContext has moved to agentcore.state.contexts.documents.
+This module re-exports the class to avoid breaking imports during transition.
+"""
 
-from agentcore.models import (
-    Document,
-)
-from agentcore.structures import ItemSequence
-from agentcore.structures.sequences import SequenceMixin
-
-from .protocols import (
-    DocumentContext,
-)
-
-
-class InMemoryDocumentContext(SequenceMixin[Document], DocumentContext):
-    def __init__(self, documents: list[Document] | None = None):
-        self._documents: ItemSequence[Document] = ItemSequence[Document](
-            items=documents or []
-        )
-
-    @property
-    @override
-    def _datastore(self) -> Sequence[Document]:
-        return self._documents
-
-    @override
-    def add(self, document: Document) -> None:
-        self._documents.append(document)
+from .documents import InMemoryDocumentContext  # noqa: F401

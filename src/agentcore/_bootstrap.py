@@ -73,9 +73,7 @@ from agentcore.state.contexts import (
     MessageContext,
     ToolContext,
 )
-from agentcore.state.contexts.action import InMemoryActionContext
-from agentcore.state.contexts.configuration import InMemoryConfigurationContext
-from agentcore.state.contexts.document import InMemoryDocumentContext
+from agentcore.state.contexts.documents import InMemoryDocumentContext
 from agentcore.state.contexts.environment import PydanticEnvironmentContext
 from agentcore.state.contexts.message import InMemoryMessageContext
 from agentcore.state.contexts.tool import InMemoryToolContext
