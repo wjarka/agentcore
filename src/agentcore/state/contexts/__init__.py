@@ -2,6 +2,7 @@ __all__ = [
     "ActionContext",
     "ConfigurationContext",
     "DocumentContext",
+    "MemoryContext",
     "MessageContext",
     "ToolContext",
     "EnvironmentContext",
@@ -14,3 +15,6 @@ from .protocols import (
     MessageContext,
     ToolContext,
 )
+
+# Backwards/UX alias: expose MemoryContext as an alias of DocumentContext
+MemoryContext = DocumentContext
