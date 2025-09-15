@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, Self, TypeVar, override
+from typing import Any, Callable, Self, TypeVar, override
 
 from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletion, ChatCompletionMessageParam
@@ -19,6 +19,7 @@ from agentcore.state.contexts import (
     ToolContext,
 )
 from agentcore.state.contexts.documents import InMemoryListStore
+from agentcore.state.contexts.documents.protocols import DocumentStore
 from agentcore.state.protocols import State
 from agentcore.telemetry.entrypoint import Telemetry
 from agentcore.toolset.protocols import (
@@ -95,7 +96,8 @@ class BaseAgent(ABC, Agent):
         injector: Injector,
         messages: list[ChatCompletionMessageParam],
         tools: list[Tool],
-        documents: list[Document],
+        documents: dict[str, list[Document]] | list[Document] | None,
+        stores: dict[str, DocumentStore | Callable[[], DocumentStore]] | None,
         max_steps: int,
     ) -> None:
         """Hook for creating and registering stateful components."""
@@ -109,14 +111,41 @@ class BaseAgent(ABC, Agent):
         injector.bind_singleton(EnvironmentContext)
         injector.bind_singleton(MessageContext, messages=messages)
         injector.bind_singleton(ConfigurationContext, max_steps=max_steps)
-        injector.bind_singleton(DocumentContext, documents=documents)
-        # Wire default document stores
+        injector.bind_singleton(DocumentContext)
+        # Wire document stores and seed documents
         docs_ctx: DocumentContext = injector.resolve(DocumentContext)
+        # 1) Register stores passed by caller
+        if stores:
+            for name, factory in stores.items():
+                store_instance = factory() if callable(factory) else factory
+                docs_ctx.register_store(name, store_instance)
+        # 2) Ensure action_results exists by default
         try:
             docs_ctx.register_store("action_results", InMemoryListStore())
         except Exception:
-            # Older implementations may not support register_store yet
             pass
+        # 3) Seed documents
+        if documents:
+            if isinstance(documents, list):
+                logger().warning(
+                    "BaseAgent.create: list[Document] is deprecated; seeding to 'workspace' store"
+                )
+                # create if missing
+                try:
+                    docs_ctx.register_store("workspace", InMemoryListStore())
+                except Exception:
+                    pass
+                for doc in documents:
+                    _ = docs_ctx.store("workspace").add(doc)
+            else:
+                for store_name, docs in documents.items():
+                    # Create missing stores with default impl
+                    try:
+                        _ = docs_ctx.store(store_name)
+                    except Exception:
+                        docs_ctx.register_store(store_name, InMemoryListStore())
+                    for doc in docs:
+                        _ = docs_ctx.store(store_name).add(doc)
         injector.bind(Injector, injector)
         injector.bind_singleton(AsyncCaller)
 
@@ -127,7 +156,8 @@ class BaseAgent(ABC, Agent):
         cls,
         messages: list[ChatCompletionMessageParam],
         tools: list[Tool] | None = None,
-        documents: list[Document] | None = None,
+        documents: dict[str, list[Document]] | list[Document] | None = None,
+        stores: dict[str, DocumentStore | Callable[[], DocumentStore]] | None = None,
         max_steps: int = 10,
         overrides: dict[type, type | object] | None = None,
     ) -> Self:
@@ -137,7 +167,8 @@ class BaseAgent(ABC, Agent):
             injector=injector,
             messages=messages,
             tools=tools or [],
-            documents=documents or [],
+            documents=documents,
+            stores=stores,
             max_steps=max_steps,
         )
         return cls(injector)
