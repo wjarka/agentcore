@@ -10,6 +10,7 @@ from agentcore.structures.sequences import SequenceMixin
 from ..protocols import DocumentContext
 from .models import DocumentMatch, DocumentQuery
 from .protocols import DocumentStore
+from .stores import InMemoryListStore
 
 
 class InMemoryDocumentContext(SequenceMixin[Document], DocumentContext):
@@ -17,6 +18,7 @@ class InMemoryDocumentContext(SequenceMixin[Document], DocumentContext):
         self._documents: ItemSequence[Document] = ItemSequence[Document](
             items=documents or []
         )
+        self._stores: dict[str, DocumentStore] = {}
 
     @property
     @override
@@ -30,12 +32,23 @@ class InMemoryDocumentContext(SequenceMixin[Document], DocumentContext):
     # New API stubs to satisfy the protocol; will be implemented in next steps
     @override
     def register_store(self, name: str, store: DocumentStore) -> None:
-        raise NotImplementedError
+        self._stores[name] = store
 
     @override
     def store(self, name: str) -> DocumentStore:
-        raise NotImplementedError
+        if name not in self._stores:
+            # Lazily create simple in-memory store
+            self._stores[name] = InMemoryListStore()
+        return self._stores[name]
 
     @override
     def search(self, query: DocumentQuery) -> list[DocumentMatch]:
-        return []
+        if query.store:
+            return self.store(query.store).search(query)
+        # Cross-store: aggregate results, simple concat then trim
+        matches: list[DocumentMatch] = []
+        for store in self._stores.values():
+            matches.extend(store.search(query))
+            if len(matches) >= query.max_results:
+                break
+        return matches[: query.max_results]

@@ -18,6 +18,7 @@ from agentcore.state.contexts import (
     MessageContext,
     ToolContext,
 )
+from agentcore.state.contexts.documents import InMemoryListStore
 from agentcore.state.protocols import State
 from agentcore.telemetry.entrypoint import Telemetry
 from agentcore.toolset.protocols import (
@@ -109,6 +110,13 @@ class BaseAgent(ABC, Agent):
         injector.bind_singleton(MessageContext, messages=messages)
         injector.bind_singleton(ConfigurationContext, max_steps=max_steps)
         injector.bind_singleton(DocumentContext, documents=documents)
+        # Wire default document stores
+        docs_ctx: DocumentContext = injector.resolve(DocumentContext)
+        try:
+            docs_ctx.register_store("action_results", InMemoryListStore())
+        except Exception:
+            # Older implementations may not support register_store yet
+            pass
         injector.bind(Injector, injector)
         injector.bind_singleton(AsyncCaller)
 
