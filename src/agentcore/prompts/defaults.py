@@ -116,7 +116,9 @@ class DefaultAnswerGeneratorPrompt(BaseSystemPrompt):
         return {
             "current_date": await self._environment_presenter.current_date(),
             # Prefer action results for answer generation
-            "documents": await self._document_presenter.full_metadata(store="action_results"),
+            "documents": await self._document_presenter.full_metadata(
+                store="action_results"
+            ),
             "query": query,
         }
 
