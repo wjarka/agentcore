@@ -175,7 +175,7 @@ class DefaultExecutionStage(ExecutionStage):
             self._actions.clear_current_intent()
             self._actions.clear_current_trace()
             self._actions.add_history_trace(trace)
-            return False
+        return False
 
     async def build_action(self) -> Action | None:
         return await self._caller.call(self._action_builder.execute)
