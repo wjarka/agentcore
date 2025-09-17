@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Wiktor Jarka", email = "wiktorj@gmail.com" }
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.28.1",
     "openai>=1.84.0",

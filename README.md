@@ -27,11 +27,11 @@ AgentCore is a small, batteries-included framework for building LLM-powered agen
   - Langfuse captures full detail. Use both with a simple list.
 
 - Async-first, strongly typed, minimal surface
-  - Python 3.13+, Pydantic 2.x, idiomatic protocols for crisp boundaries.
+  - Python 3.12+, Pydantic 2.x, idiomatic protocols for crisp boundaries.
 
 ## Install
 
-AgentCore targets Python 3.13+.
+AgentCore targets Python 3.12+.
 
 Using uv (recommended):
 
