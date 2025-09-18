@@ -3,7 +3,7 @@ from typing import Literal
 import requests
 from pydantic import HttpUrl, JsonValue
 
-from agentcore.models import ToolParam
+from agentcore.models import ActionResult, Document, Metadata, ToolParam
 from agentcore.toolset.library import tools
 from agentcore.utils import convert_output_to_action_result
 
@@ -23,8 +23,8 @@ from agentcore.utils import convert_output_to_action_result
         ),
     },
 )
-@convert_output_to_action_result
-def web_request(url: HttpUrl, method: str, payload: JsonValue | None = None) -> str:
+
+def web_request(url: HttpUrl, method: str, payload: JsonValue | None = None) -> ActionResult:
     match method:
         case "GET":
             response = requests.get(str(url))
@@ -32,4 +32,4 @@ def web_request(url: HttpUrl, method: str, payload: JsonValue | None = None) -> 
             response = requests.post(str(url), json=payload)
         case _:
             raise ValueError(f"Unsupported method: {method}")
-    return response.text
+    return [Document(text=response.text, metadata=Metadata(source=str(url)))]
