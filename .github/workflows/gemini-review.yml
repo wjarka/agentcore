@@ -64,10 +64,6 @@ jobs:
                   gemini_debug: "${{ fromJSON(vars.DEBUG || vars.ACTIONS_STEP_DEBUG || false) }}"
                   settings: |-
                       {
-                        "model":
-                          {
-                            "name": "gemini-2.5-pro"
-                          },
                         "maxSessionTurns": 25,
                         "telemetry": {
                           "enabled": ${{ vars.GOOGLE_CLOUD_PROJECT != '' }},
