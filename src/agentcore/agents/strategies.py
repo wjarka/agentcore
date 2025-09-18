@@ -172,7 +172,6 @@ class DefaultExecutionStage(ExecutionStage):
         finally:
             for document in trace.result:
                 _ = self._documents.store("action_results").add(document)
-            self._actions.clear_current_intent()
             self._actions.clear_current_trace()
             self._actions.add_history_trace(trace)
         return False
