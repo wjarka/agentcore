@@ -60,7 +60,9 @@ class BaseAgent(ABC, Agent):
             name=f"execute() [{self.__class__.__name__}]",
         ):
             await self._execute_loop()
-            return await self.generate_answer()
+            answer = await self.generate_answer()
+            self._state.actions.clear_current_intent()
+            return answer
 
     async def _execute_loop(self):
         for step in range(0, self._state.configuration.max_steps):
