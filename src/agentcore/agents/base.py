@@ -144,6 +144,7 @@ class BaseAgent(ABC, Agent):
     def create(
         cls,
         messages: list[ChatCompletionMessageParam],
+        *,
         tools: list[Tool] | None = None,
         documents: dict[str, list[Document]] | None = None,
         stores: dict[str, DocumentStore | Callable[[], DocumentStore]] | None = None,
