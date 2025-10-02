@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, ClassVar, TypeAlias
+from typing import Any, ClassVar, Literal, TypeAlias
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field, field_validator
 from pydantic.types import JsonValue
@@ -39,6 +39,8 @@ class Metadata(BaseModel):
     screenshots: list[str] | None = None
     chunk_index: int | None = None
     total_chunks: int | None = None
+    type: Literal["text", "image", "audio", "document"] | None = None
+    path: str | None = None
 
 
 class Document(BaseModel):
