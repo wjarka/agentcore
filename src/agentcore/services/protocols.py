@@ -59,6 +59,14 @@ class LLMService(Protocol):
         name: str | None = None,
     ) -> AsyncIterable[ChatCompletionChunk]: ...
 
+    async def transcribe(
+        self,
+        audio_files: list[str],
+        language: str = "en",
+        prompt: str | None = None,
+        file_name: str = "transcription.md",
+    ) -> list[Document]: ...
+
 
 class EmbeddingService(Protocol):
     async def get_openai_embedding(

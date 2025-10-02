@@ -19,7 +19,7 @@ from openai.types.chat import (
 from pydantic import TypeAdapter
 
 from agentcore.log import logger
-from agentcore.models import Document as IDoc
+from agentcore.models import Document
 from agentcore.prompts.protocols import Prompt, SystemPrompt
 from agentcore.services import EmbeddingService, LLMService, TextService
 from agentcore.telemetry import Telemetry
@@ -319,9 +319,8 @@ class OpenAIService(LLMService):
             Extracted text from the image.
         """
         try:
-            loop = asyncio.get_running_loop()
             with open(image_path, "rb") as f:
-                image_bytes = await loop.run_in_executor(None, f.read)
+                image_bytes = await asyncio.to_thread(f.read)
             base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
             if image_path.lower().endswith(".png"):
@@ -409,13 +408,14 @@ class OpenAIService(LLMService):
             logger().error("Error in OpenAI transcription: %s", error, exc_info=True)
             raise error
 
+    @override
     async def transcribe(
         self,
         audio_files: list[str],
         language: str = "en",
         prompt: str | None = None,
         file_name: str = "transcription.md",
-    ) -> list[IDoc]:
+    ) -> list[Document]:
         """
         Transcribes multiple audio files and processes them into Document objects.
 
@@ -430,10 +430,9 @@ class OpenAIService(LLMService):
         """
         logger().info("Transcribing multiple audio files...")
 
-        async def process_file(file_path: str) -> IDoc:
-            loop = asyncio.get_running_loop()
+        async def process_file(file_path: str) -> Document:
             with open(file_path, "rb") as f:
-                buffer = await loop.run_in_executor(None, f.read)
+                buffer = await asyncio.to_thread(f.read)
             transcription_text = await self.transcribe_buffer(
                 buffer, language=language, prompt=prompt
             )
