@@ -5,7 +5,6 @@ from pydantic import HttpUrl, JsonValue
 
 from agentcore.models import ActionResult, Document, Metadata, ToolParam
 from agentcore.toolset.library import tools
-from agentcore.utils import convert_output_to_action_result
 
 
 @tools.wrap_and_register(
@@ -23,8 +22,9 @@ from agentcore.utils import convert_output_to_action_result
         ),
     },
 )
-
-def web_request(url: HttpUrl, method: str, payload: JsonValue | None = None) -> ActionResult:
+def web_request(
+    url: HttpUrl, method: str, payload: JsonValue | None = None
+) -> ActionResult:
     match method:
         case "GET":
             response = requests.get(str(url))
