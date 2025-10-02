@@ -164,9 +164,11 @@ def bootstrap(
 def bind_jinja_environment(path: str | None = None):
     if path is None:
         path = os.getenv("JINJA_TEMPLATES_PATH")
-    loaders: list[jinja2.BaseLoader] = [jinja2.PackageLoader("agentcore", "templates")]
+    loaders: list[jinja2.BaseLoader] = []
+
     if path:
         loaders.append(jinja2.FileSystemLoader(path))
+    loaders.append(jinja2.PackageLoader("agentcore", "templates"))
 
     injector.bind(
         jinja2.Environment,
