@@ -98,7 +98,7 @@ from agentcore.toolset.protocols import (
 
 def bootstrap(
     *,
-    telemetry: Sequence[type[Provider] | Provider] | None = None,
+    telemetry: list[Provider | Provider] | None = None,
     jinja_templates_path: str | None = None,
     logger: logging.Logger | None = None,
 ):
@@ -177,6 +177,5 @@ def bind_jinja_environment(path: str | None = None):
             enable_async=True,
         ),
     )
-
 
 injector: Injector = global_injector
